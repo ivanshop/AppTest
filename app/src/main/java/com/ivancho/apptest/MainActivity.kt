@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.*
+import com.ivancho.apptest.models.Post
 import com.ivancho.apptest.repository.Repository
 import kotlinx.coroutines.launch
 import com.ivancho.apptest.ui.theme.AppTestTheme
@@ -79,19 +80,14 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
 @Composable
 fun DeleteFAB() {
     FloatingActionButton(onClick = {
-        viewModel.allPosts.clear()
+        viewModel.allPosts = emptyList()
+        viewModel.favoritePosts.clear()
     }) {
         Icon(
             imageVector = Icons.Default.Delete,
             contentDescription = "Remove",
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    MainScreen(navController = rememberNavController(), viewModel = viewModel)
 }
 
 @Composable
@@ -112,12 +108,6 @@ fun TopBar() {
         contentColor = Color.White,
         elevation = 0.dp
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TopBarPreview() {
-    TopBar()
 }
 
 
@@ -153,14 +143,6 @@ fun Tabs(tabs: List<String>, pagerState: PagerState) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
-@Preview(showBackground = true)
-@Composable
-fun TabsPreview() {
-    val tabs = listOf("ALL", "FAVORITES")
-    val pagerState = rememberPagerState()
-    Tabs(tabs = tabs, pagerState = pagerState)
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -176,19 +158,4 @@ fun TabsContent(
             1 -> FavoritePostsScreen(navController, viewModel)
         }
     }
-}
-
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview(showBackground = true)
-@Composable
-fun TabsContentPreview() {
-    val tabs = listOf("ALL", "FAVORITES")
-    val pagerState = rememberPagerState()
-    TabsContent(
-        tabs = tabs,
-        pagerState = pagerState,
-        navController = rememberNavController(),
-        viewModel = viewModel
-    )
 }
